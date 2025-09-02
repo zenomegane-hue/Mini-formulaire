@@ -1,76 +1,730 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Mini formulaire</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6fc;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-    form {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      min-width: 300px;
-    }
-    label {
-      font-weight: bold;
-    }
-    input {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      background: #0055ff;
-      color: #fff;
-      border: none;
-      padding: 0.7rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    button:hover {
-      background: #0033aa;
-    }
-    .message {
-      margin-top: 1rem;
-      color: green;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de Carte Mégane-Carde</title>
+    <style>
+        /* CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="file"] {
+            padding: 3px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        /* Menu de paramètres */
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        #menu {
+            display: none;
+            position: absolute;
+            top: 55px;
+            right: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        #menu button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            border: none;
+            background-color: transparent;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #menu button:hover {
+            background-color: #f4f4f4;
+        }
+
+        /* Styles pour la carte d'identité spécifique */
+        #carte-preview {
+            margin-top: 30px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fdfdfd;
+            display: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 85.60mm;
+            height: 53.98mm;
+            overflow: hidden;
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #carte-header {
+            text-align: center;
+        }
+
+        #carte-header h2 {
+            margin: 0 0 5px 0;
+            color: #007bff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #carte-content {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-grow: 1;
+            padding-top: 5px;
+        }
+
+        #carte-info {
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+        
+        #carte-info p {
+            font-size: 9px;
+            color: #333;
+            text-align: left;
+            margin: 2px 0;
+            line-height: 1.2;
+        }
+
+        #carte-info strong {
+            display: inline-block;
+            width: 60px;
+        }
+
+        #carte-photo {
+            width: 50px;
+            height: 65px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        /* Styles de la galerie des cartes enregistrées */
+        #gallery {
+            margin-top: 40px;
+            border-top: 2px solid #ccc;
+            padding-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        #gallery h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .saved-card {
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            width: 150px;
+            text-align: left;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .saved-card img {
+            width: 50px;
+            height: 65px;
+            border-radius: 4px;
+            float: right;
+        }
+
+        .saved-card p {
+            font-size: 10px;
+            margin: 2px 0;
+            line-height: 1.2;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .download-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn.png {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .download-btn.png:hover {
+            background-color: #218838;
+        }
+
+        .download-btn.pdf {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .download-btn.pdf:hover {
+            background-color: #c82333;
+        }
+
+        .btn-save-card {
+            background-color: #3f51b5;
+            color: #fff;
+        }
+        .btn-save-card:hover {
+            background-color: #303f9f;
+        }
+
+        /* Styles de la modale d'aperçu */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            width: 85.60mm;
+            height: 53.98mm;
+            border-radius: 8px;
+            border: 2px solid #007bff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .preview-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #555;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <h1>Formulaire d'inscription</h1>
-  <form id="inscription-form">
-    <label for="nom">Nom :</label>
-    <input type="text" id="nom" name="nom" required />
 
-    <label for="email">Adresse email :</label>
-    <input type="email" id="email" name="email" required />
+    <div class="container">
+        <h1>Création de Carte Mégane-Carde</h1>
+        <button class="menu-btn" id="menu-toggle-btn">&#9776;</button>
+        <div id="menu">
+            <button id="show-gallery">Bibliothèque</button>
+            <button id="show-form">Nouvelle Carte</button>
+        </div>
 
-    <button type="submit">Envoyer</button>
-    <div id="message" class="message" style="display:none;"></div>
-  </form>
-  <script>
-    document.getElementById('inscription-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const nom = document.getElementById('nom').value;
-      const email = document.getElementById('email').value;
-      document.getElementById('message').textContent = `Merci ${nom}, votre email (${email}) a bien été reçu !`;
-      document.getElementById('message').style.display = "block";
-      event.target.reset();
-    });
-  </script>
+        <div id="main-content">
+            <form id="form-carte">
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="prenom">Prénom :</label>
+                    <input type="text" id="prenom" required>
+                </div>
+                <div class="form-group">
+                    <label for="dateNaissance">Date de Naissance :</label>
+                    <input type="date" id="dateNaissance" required>
+                </div>
+                <div class="form-group">
+                    <label for="lieuNaissance">Lieu de Naissance :</label>
+                    <input type="text" id="lieuNaissance" required>
+                </div>
+                <div class="form-group">
+                    <label for="ethnie">Ethnie :</label>
+                    <input type="text" id="ethnie">
+                </div>
+                <div class="form-group">
+                    <label for="nationalite">Nationalité :</label>
+                    <input type="text" id="nationalite" required>
+                </div>
+                <div class="form-group">
+                    <label for="lieuHabitation">Lieu d'Habitation :</label>
+                    <input type="text" id="lieuHabitation" required>
+                </div>
+                <div class="form-group">
+                    <label for="numeroTelephone">Numéro de Téléphone :</label>
+                    <input type="tel" id="numeroTelephone" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email :</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="photo">Photo :</label>
+                    <input type="file" id="photo" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn-submit">Créer la Carte</button>
+            </form>
+
+            <div id="carte-preview">
+                <button class="preview-btn" id="preview-main-btn" style="display:none;">👁️</button>
+                <div id="carte-header">
+                    <h2>Mégane-Carde</h2>
+                </div>
+                <div id="carte-content">
+                    <div id="carte-info">
+                        <p><strong>Nom :</strong> <span id="display-nom"></span></p>
+                        <p><strong>Prénom :</strong> <span id="display-prenom"></span></p>
+                        <p><strong>Date de Naissance :</strong> <span id="display-dateNaissance"></span></p>
+                        <p><strong>Lieu de Naissance :</strong> <span id="display-lieuNaissance"></span></p>
+                        <p><strong>Ethnie :</strong> <span id="display-ethnie"></span></p>
+                        <p><strong>Nationalité :</strong> <span id="display-nationalite"></span></p>
+                        <p><strong>Lieu d'Habitation :</strong> <span id="display-lieuHabitation"></span></p>
+                        <p><strong>Téléphone :</strong> <span id="display-numeroTelephone"></span></p>
+                        <p><strong>Email :</strong> <span id="display-email"></span></p>
+                    </div>
+                    <img id="carte-photo" src="" alt="Photo d'identité">
+                </div>
+            </div>
+            
+            <div class="download-buttons" style="display: none;">
+                <button id="download-png" class="download-btn png">Télécharger PNG</button>
+                <button id="download-pdf" class="download-btn pdf">Télécharger PDF</button>
+                <button id="save-card" class="download-btn btn-save-card">Enregistrer</button>
+            </div>
+        </div>
+        
+        <div id="gallery">
+            <h2>Cartes Enregistrées</h2>
+            <div id="gallery-container">
+                </div>
+        </div>
+    </div>
+
+    <div id="previewModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <div id="modal-content-container"></div>
+    </div>
+
+    <script>
+        // JavaScript
+        const cardData = JSON.parse(localStorage.getItem('savedCards')) || [];
+        const formContent = document.getElementById('main-content');
+        const galleryContent = document.getElementById('gallery');
+        const downloadButtons = document.querySelector('.download-buttons');
+        const cartePreview = document.getElementById('carte-preview');
+        const previewModal = document.getElementById('previewModal');
+        const modalContentContainer = document.getElementById('modal-content-container');
+        const menu = document.getElementById('menu');
+
+        // Fonction de validation du formulaire
+        function validateForm(formData) {
+            // Règle 1: Nom et Prénom
+            const nomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
+            const prenomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
+            if (!nomRegex.test(formData.nom) || !prenomRegex.test(formData.prenom)) {
+                alert("Le nom et le prénom doivent contenir entre 2 et 50 lettres (accents et espaces autorisés).");
+                return false;
+            }
+
+            // Règle 2: Date de naissance
+            const dateNaissance = new Date(formData.dateNaissance);
+            const today = new Date();
+            if (isNaN(dateNaissance.getTime()) || dateNaissance >= today) {
+                alert("La date de naissance doit être une date valide dans le passé.");
+                return false;
+            }
+
+            // Règle 3: Email et Téléphone
+            const emailRegex = /^\S+@\S+\.\S+$/;
+            if (!emailRegex.test(formData.email)) {
+                alert("Veuillez saisir une adresse email valide.");
+                return false;
+            }
+            // Règle pour le téléphone (optionnel, simple format)
+            const telRegex = /^\+?[0-9\s-]{6,15}$/;
+            if (!telRegex.test(formData.numeroTelephone)) {
+                alert("Veuillez saisir un numéro de téléphone valide (entre 6 et 15 chiffres, tirets, espaces ou '+' autorisés).");
+                return false;
+            }
+
+            // Règle 4: Photo
+            const file = formData.photoFile;
+            if (file) {
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Seuls les formats JPEG, PNG et JPG sont acceptés.");
+                    return false;
+                }
+                const maxFileSize = 2 * 1024 * 1024; // 2 Mo
+                if (file.size > maxFileSize) {
+                    alert("La taille du fichier ne doit pas dépasser 2 Mo.");
+                    return false;
+                }
+
+                // NOTE: La détection d'un visage humain n'est pas possible avec un simple script JavaScript.
+                // Cela nécessite une librairie externe lourde ou un service d'API.
+                // Le code pour cette fonctionnalité serait placé ici.
+                // Par exemple: `if (!faceDetected(file)) { alert("Pas de visage détecté !"); return false; }`
+            }
+
+            return true; // Toutes les validations sont réussies
+        }
+
+        function updateFormWithCardData(data) {
+            document.getElementById('nom').value = data.nom;
+            document.getElementById('prenom').value = data.prenom;
+            document.getElementById('dateNaissance').value = data.dateNaissance;
+            document.getElementById('lieuNaissance').value = data.lieuNaissance;
+            document.getElementById('ethnie').value = data.ethnie;
+            document.getElementById('nationalite').value = data.nationalite;
+            document.getElementById('lieuHabitation').value = data.lieuHabitation;
+            document.getElementById('numeroTelephone').value = data.numeroTelephone;
+            document.getElementById('email').value = data.email;
+            document.getElementById('carte-photo').src = data.photo;
+
+            document.getElementById('display-nom').textContent = data.nom;
+            document.getElementById('display-prenom').textContent = data.prenom;
+            document.getElementById('display-dateNaissance').textContent = data.dateNaissance;
+            document.getElementById('display-lieuNaissance').textContent = data.lieuNaissance;
+            document.getElementById('display-ethnie').textContent = data.ethnie || 'Non spécifié';
+            document.getElementById('display-nationalite').textContent = data.nationalite;
+            document.getElementById('display-lieuHabitation').textContent = data.lieuHabitation;
+            document.getElementById('display-numeroTelephone').textContent = data.numeroTelephone;
+            document.getElementById('display-email').textContent = data.email;
+
+            cartePreview.style.display = 'flex';
+            downloadButtons.style.display = 'flex';
+            document.getElementById('preview-main-btn').style.display = 'block';
+        }
+
+        function renderGallery() {
+            const galleryContainer = document.getElementById('gallery-container');
+            galleryContainer.innerHTML = '';
+
+            cardData.forEach((card, index) => {
+                const newCard = document.createElement('div');
+                newCard.className = 'saved-card';
+                newCard.innerHTML = `
+                    <img src="${card.photo}" alt="Carte Enregistrée">
+                    <p><strong>Nom :</strong> ${card.nom}</p>
+                    <p><strong>Prénom :</strong> ${card.prenom}</p>
+                    <button class="preview-btn gallery-preview-btn">👁️</button>
+                `;
+                newCard.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('gallery-preview-btn')) {
+                        updateFormWithCardData(card);
+                        showForm();
+                    }
+                });
+                newCard.querySelector('.gallery-preview-btn').addEventListener('click', () => {
+                    showPreview(card);
+                });
+                galleryContainer.appendChild(newCard);
+            });
+        }
+
+        function showGallery() {
+            formContent.style.display = 'none';
+            galleryContent.style.display = 'block';
+            renderGallery();
+        }
+
+        function showForm() {
+            formContent.style.display = 'block';
+            galleryContent.style.display = 'none';
+        }
+
+        function clearForm() {
+            document.getElementById('form-carte').reset();
+            cartePreview.style.display = 'none';
+            downloadButtons.style.display = 'none';
+            document.getElementById('preview-main-btn').style.display = 'none';
+        }
+
+        function showPreview(card = null) {
+            modalContentContainer.innerHTML = '';
+            
+            let cardElement;
+            if (card) {
+                cardElement = document.createElement('div');
+                cardElement.id = 'carte-preview-modal';
+                cardElement.style.width = '85.60mm';
+                cardElement.style.height = '53.98mm';
+                cardElement.style.padding = '15px';
+                cardElement.style.border = '2px solid #007bff';
+                cardElement.style.borderRadius = '8px';
+                cardElement.style.backgroundColor = '#fdfdfd';
+                cardElement.innerHTML = `
+                    <div style="text-align: center;">
+                        <h2 style="margin: 0 0 5px 0; color: #007bff; font-size: 14px; text-transform: uppercase;">Mégane-Carde</h2>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1; padding-top: 5px;">
+                        <div style="flex-grow: 1; padding-right: 10px;">
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Nom :</strong> ${card.nom}</p>
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Date de Naissance :</strong> ${card.dateNaissance}</p>
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Lieu de Naissance :</strong> ${card.lieuNaissance}</p>
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Lieu d'Habitation :</strong> ${card.lieuHabitation}</p>
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Téléphone :</strong> ${card.numeroTelephone}</p>
+                            <p style="font-size: 9px; margin: 2px 0;"><strong>Email :</strong> ${card.email}</p>
+                        </div>
+                        <img src="${card.photo}" style="width: 50px; height: 65px; border: 1px solid #ddd; border-radius: 4px; object-fit: cover; flex-shrink: 0;">
+                    </div>
+                `;
+            } else {
+                cardElement = cartePreview.cloneNode(true);
+                cardElement.style.display = 'flex';
+                cardElement.style.boxShadow = 'none';
+                cardElement.querySelector('.preview-btn').style.display = 'none';
+            }
+
+            modalContentContainer.appendChild(cardElement);
+            previewModal.style.display = 'flex';
+        }
+
+        // Événements pour la modale
+        document.querySelector('.close-btn').addEventListener('click', () => {
+            previewModal.style.display = 'none';
+        });
+        window.addEventListener('click', (event) => {
+            if (event.target === previewModal) {
+                previewModal.style.display = 'none';
+            }
+        });
+
+        // Gestion du menu
+        document.getElementById('menu-toggle-btn').addEventListener('click', function() {
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.getElementById('show-gallery').addEventListener('click', () => {
+            showGallery();
+            menu.style.display = 'none';
+        });
+
+        document.getElementById('show-form').addEventListener('click', () => {
+            clearForm();
+            showForm();
+            menu.style.display = 'none';
+        });
+
+        // Soumission du formulaire
+        document.getElementById('form-carte').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Collecte des données du formulaire
+            const formData = {
+                nom: document.getElementById('nom').value,
+                prenom: document.getElementById('prenom').value,
+                dateNaissance: document.getElementById('dateNaissance').value,
+                lieuNaissance: document.getElementById('lieuNaissance').value,
+                ethnie: document.getElementById('ethnie').value,
+                nationalite: document.getElementById('nationalite').value,
+                lieuHabitation: document.getElementById('lieuHabitation').value,
+                numeroTelephone: document.getElementById('numeroTelephone').value,
+                email: document.getElementById('email').value,
+                photoFile: document.getElementById('photo').files[0]
+            };
+            
+            // Validation des données selon les règles
+            if (!validateForm(formData)) {
+                return; // Arrête la fonction si la validation échoue
+            }
+
+            // Capitalisation de la première lettre pour les champs de texte
+            formData.nom = formData.nom.charAt(0).toUpperCase() + formData.nom.slice(1).toLowerCase();
+            formData.prenom = formData.prenom.charAt(0).toUpperCase() + formData.prenom.slice(1).toLowerCase();
+            formData.lieuNaissance = formData.lieuNaissance.charAt(0).toUpperCase() + formData.lieuNaissance.slice(1).toLowerCase();
+            formData.lieuHabitation = formData.lieuHabitation.charAt(0).toUpperCase() + formData.lieuHabitation.slice(1).toLowerCase();
+
+            // Affichage de la carte
+            document.getElementById('display-nom').textContent = formData.nom;
+            document.getElementById('display-prenom').textContent = formData.prenom;
+            document.getElementById('display-dateNaissance').textContent = formData.dateNaissance;
+            document.getElementById('display-lieuNaissance').textContent = formData.lieuNaissance;
+            document.getElementById('display-ethnie').textContent = formData.ethnie || 'Non spécifié';
+            document.getElementById('display-nationalite').textContent = formData.nationalite;
+            document.getElementById('display-lieuHabitation').textContent = formData.lieuHabitation;
+            document.getElementById('display-numeroTelephone').textContent = formData.numeroTelephone;
+            document.getElementById('display-email').textContent = formData.email;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('carte-photo').src = e.target.result;
+                cartePreview.style.display = 'flex';
+                downloadButtons.style.display = 'flex';
+                document.getElementById('preview-main-btn').style.display = 'block';
+            };
+            reader.readAsDataURL(formData.photoFile);
+        });
+
+        // Téléchargement et enregistrement
+        async function captureAndDownload(format) {
+            downloadButtons.style.display = 'none';
+            document.getElementById('preview-main-btn').style.display = 'none';
+            await new Promise(resolve => setTimeout(resolve, 50));
+            const canvas = await html2canvas(cartePreview, {
+                scale: 4, useCORS: true, width: cartePreview.offsetWidth, height: cartePreview.offsetHeight
+            });
+            downloadButtons.style.display = 'flex';
+            document.getElementById('preview-main-btn').style.display = 'block';
+
+            if (format === 'png') {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'carte-megane.png';
+                link.click();
+            } else if (format === 'pdf') {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'landscape', unit: 'mm', format: [85.60, 53.98]
+                });
+                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 53.98);
+                pdf.save('carte-megane.pdf');
+            }
+        }
+        
+        document.getElementById('save-card').addEventListener('click', async function() {
+            const data = {
+                nom: document.getElementById('nom').value, prenom: document.getElementById('prenom').value, dateNaissance: document.getElementById('dateNaissance').value, lieuNaissance: document.getElementById('lieuNaissance').value, ethnie: document.getElementById('ethnie').value, nationalite: document.getElementById('nationalite').value, lieuHabitation: document.getElementById('lieuHabitation').value, numeroTelephone: document.getElementById('numeroTelephone').value, email: document.getElementById('email').value, photo: document.getElementById('carte-photo').src
+            };
+            const existingIndex = cardData.findIndex(card => card.nom === data.nom && card.prenom === data.prenom);
+            if (existingIndex !== -1) {
+                cardData[existingIndex] = data;
+            } else {
+                cardData.push(data);
+            }
+            localStorage.setItem('savedCards', JSON.stringify(cardData));
+            alert('Carte enregistrée avec succès !');
+        });
+
+        // Événements des boutons
+        document.getElementById('download-png').addEventListener('click', () => captureAndDownload('png'));
+        document.getElementById('download-pdf').addEventListener('click', () => captureAndDownload('pdf'));
+        document.getElementById('preview-main-btn').addEventListener('click', () => showPreview());
+    </script>
 </body>
 </html>

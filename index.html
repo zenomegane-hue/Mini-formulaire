@@ -7,30 +7,42 @@
     <style>
         /* CSS */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f2f7;
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            color: #34495e;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         .container {
-            background-color: #fff;
+            background-color: #ffffff;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             position: relative;
+            animation: fadeIn 0.8s ease-out;
+            transition: background-color 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
-            color: #333;
+            color: #2c3e50;
             text-align: center;
             margin-bottom: 30px;
+            font-size: 2em;
+            letter-spacing: 1px;
+            transition: color 0.5s ease;
         }
 
         .form-group {
@@ -41,7 +53,8 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #555;
+            color: #34495e;
+            transition: color 0.5s ease;
         }
 
         input[type="text"],
@@ -51,14 +64,26 @@
         input[type="file"] {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            border: 1px solid #c0d9e6;
+            border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease, color 0.5s ease;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="tel"]:focus,
+        input[type="email"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
         }
 
         input[type="file"] {
-            padding: 3px;
+            padding: 10px;
         }
 
         .btn-submit {
@@ -67,15 +92,16 @@
             background-color: #007bff;
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .btn-submit:hover {
             background-color: #0056b3;
+            transform: translateY(-2px);
         }
 
         /* Menu de paramètres */
@@ -85,68 +111,85 @@
             right: 20px;
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             color: #555;
+            transition: color 0.3s ease;
+        }
+        .menu-btn:hover {
+            color: #007bff;
         }
 
         #menu {
             display: none;
             position: absolute;
-            top: 55px;
+            top: 60px;
             right: 20px;
             background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 10;
+            min-width: 150px;
+            transition: background-color 0.5s ease;
         }
 
         #menu button {
             display: block;
             width: 100%;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             background-color: transparent;
             text-align: left;
             cursor: pointer;
             font-size: 16px;
+            color: #333;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         #menu button:hover {
-            background-color: #f4f4f4;
+            background-color: #f0f0f0;
+            color: #007bff;
         }
 
-        /* Styles pour la carte d'identité spécifique */
+        /* Styles pour la carte d'identité SPÉCIFIQUE */
         #carte-preview {
-            margin-top: 30px;
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            padding: 15px;
-            background-color: #fdfdfd;
-            display: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            margin-top: 40px;
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            border: 2px solid #0056b3;
+            border-radius: 12px;
+            padding: 8px 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             width: 85.60mm;
-            height: 53.98mm;
-            overflow: hidden;
+            height: 53.98mm; 
             position: relative;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, background 0.5s ease;
+        }
+
+        #carte-preview:hover {
+            transform: translateY(-5px) scale(1.02);
         }
 
         #carte-header {
             text-align: center;
+            border-bottom: 1px solid rgba(0, 86, 179, 0.2);
+            padding-bottom: 3px;
+            margin-bottom: 5px;
         }
 
         #carte-header h2 {
-            margin: 0 0 5px 0;
-            color: #007bff;
-            font-size: 14px;
+            margin: 0;
+            color: #0056b3;
+            font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 700;
+            transition: color 0.5s ease;
         }
 
         #carte-content {
@@ -154,95 +197,82 @@
             align-items: flex-start;
             justify-content: space-between;
             flex-grow: 1;
-            padding-top: 5px;
         }
 
         #carte-info {
             flex-grow: 1;
-            padding-right: 10px;
+            padding-right: 8px;
+            font-size: 0.45em; 
+            line-height: 1.1; 
+            transition: color 0.5s ease;
         }
         
         #carte-info p {
-            font-size: 9px;
             color: #333;
             text-align: left;
-            margin: 2px 0;
-            line-height: 1.2;
+            margin: 0px 0; 
+            transition: color 0.5s ease;
         }
 
         #carte-info strong {
             display: inline-block;
-            width: 60px;
+            width: 48px; 
+            color: #004d80;
+            font-weight: 600;
+            transition: color 0.5s ease;
+        }
+
+        #carte-photo-container {
+            flex-shrink: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 55px;
         }
 
         #carte-photo {
             width: 50px;
             height: 65px;
-            border: 1px solid #ddd;
+            border: 2px solid #0056b3;
             border-radius: 4px;
             object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        /* Styles de la galerie des cartes enregistrées */
-        #gallery {
-            margin-top: 40px;
-            border-top: 2px solid #ccc;
-            padding-top: 20px;
-            text-align: center;
-            display: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
-        #gallery h2 {
-            color: #333;
-            margin-bottom: 20px;
+        #carte-fonction {
+            font-size: 0.5em;
+            color: #004d80;
+            font-weight: bold;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
         }
 
-        #gallery-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .saved-card {
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            width: 150px;
-            text-align: left;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .saved-card img {
-            width: 50px;
-            height: 65px;
-            border-radius: 4px;
-            float: right;
-        }
-
-        .saved-card p {
-            font-size: 10px;
-            margin: 2px 0;
-            line-height: 1.2;
-        }
-
+        /* Styles des boutons de téléchargement */
         .download-buttons {
             display: flex;
-            justify-content: space-around;
-            margin-top: 25px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
             width: 100%;
         }
 
         .download-btn {
-            padding: 8px 15px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 15px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
         }
 
         .download-btn.png {
@@ -264,54 +294,125 @@
         }
 
         .btn-save-card {
-            background-color: #3f51b5;
+            background-color: #673ab7;
             color: #fff;
         }
         .btn-save-card:hover {
-            background-color: #303f9f;
+            background-color: #512da8;
+        }
+
+        /* Styles de la galerie des cartes enregistrées */
+        #gallery {
+            margin-top: 40px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 30px;
+            text-align: center;
+            display: none;
+            transition: border-color 0.5s ease;
+        }
+        
+        #gallery h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            transition: color 0.5s ease;
+        }
+
+        #gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .saved-card {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e0e7ee 100%);
+            border: 1px solid #a7d9ed;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            padding: 12px;
+            width: 160px;
+            text-align: left;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.5s ease;
+        }
+
+        .saved-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .saved-card img {
+            width: 55px;
+            height: 70px;
+            border-radius: 5px;
+            float: right;
+            margin-left: 10px;
+            border: 1px solid #b3d4f4;
+        }
+
+        .saved-card p {
+            font-size: 0.75em;
+            margin: 2px 0;
+            line-height: 1.3;
+            color: #444;
+            transition: color 0.5s ease;
+        }
+
+        .saved-card .preview-btn {
+            top: 8px;
+            right: 8px;
+            font-size: 16px;
         }
 
         /* Styles de la modale d'aperçu */
         .modal {
-            display: none;
             position: fixed;
             z-index: 100;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: none;
             justify-content: center;
             align-items: center;
         }
 
         .modal-content {
+            border: 3px solid #0056b3;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            border-radius: 12px;
+            padding: 8px 12px;
             position: relative;
-            background-color: #fefefe;
-            margin: auto;
-            padding: 0;
-            width: 85.60mm;
-            height: 53.98mm;
-            border-radius: 8px;
-            border: 2px solid #007bff;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: scale(1.1);
+            transition: transform 0.3s ease-out;
+            width: 85.60mm; 
+            height: 53.98mm; 
+            box-sizing: border-box; 
+            overflow: hidden;
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
         }
 
         .close-btn {
             position: absolute;
-            top: 5px;
-            right: 15px;
-            color: #aaa;
-            font-size: 28px;
+            top: 10px;
+            right: 20px;
+            color: #fff;
+            font-size: 40px;
             font-weight: bold;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
             cursor: pointer;
         }
-
         .close-btn:hover,
         .close-btn:focus {
-            color: black;
+            color: #ff6b6b;
             text-decoration: none;
             cursor: pointer;
         }
@@ -322,9 +423,130 @@
             right: 5px;
             font-size: 18px;
             cursor: pointer;
-            background: none;
+            background: rgba(255, 255, 255, 0.7);
             border: none;
             color: #555;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .preview-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        /* Thème sombre */
+        body.dark-theme {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .dark-theme .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .dark-theme h1,
+        .dark-theme label,
+        .dark-theme h2 {
+            color: #e0e0e0;
+        }
+        
+        .dark-theme input[type="text"],
+        .dark-theme input[type="date"],
+        .dark-theme input[type="tel"],
+        .dark-theme input[type="email"],
+        .dark-theme input[type="file"] {
+            background-color: #2c2c2c;
+            border-color: #3e3e3e;
+            color: #e0e0e0;
+        }
+
+        .dark-theme input[type="text"]:focus,
+        .dark-theme input[type="date"]:focus,
+        .dark-theme input[type="tel"]:focus,
+        .dark-theme input[type="email"]:focus {
+            border-color: #8ab4f8;
+            box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.25);
+        }
+        
+        .dark-theme .menu-btn {
+            color: #ccc;
+        }
+        .dark-theme .menu-btn:hover {
+            color: #8ab4f8;
+        }
+
+        .dark-theme #menu {
+            background-color: #2c2c2c;
+            border-color: #3e3e3e;
+        }
+
+        .dark-theme #menu button {
+            color: #e0e0e0;
+        }
+        .dark-theme #menu button:hover {
+            background-color: #444;
+            color: #8ab4f8;
+        }
+
+        .dark-theme #carte-preview {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-color: #0d47a1;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .dark-theme #carte-header h2 {
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme #carte-info p,
+        .dark-theme #carte-info strong,
+        .dark-theme #carte-fonction {
+            color: #e0e0e0;
+        }
+
+        .dark-theme #carte-photo {
+            border-color: #e0e0e0;
+        }
+
+        .dark-theme .saved-card {
+            background: #2a2a2a;
+            border-color: #444;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-theme .saved-card img {
+            border-color: #444;
+        }
+        
+        .dark-theme .saved-card p {
+            color: #e0e0e0;
+        }
+
+        .dark-theme .preview-btn {
+            background: rgba(44, 44, 44, 0.7);
+            color: #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .dark-theme .preview-btn:hover {
+            background-color: #8ab4f8;
+            color: #1e1e1e;
+        }
+        
+        .dark-theme .modal-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-color: #0d47a1;
+        }
+
+        .dark-theme .close-btn {
+            color: #f0f0f0;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -336,12 +558,17 @@
         <h1>Création de Carte Mégane-Carde</h1>
         <button class="menu-btn" id="menu-toggle-btn">&#9776;</button>
         <div id="menu">
+            <button id="show-home">Accueil</button>
             <button id="show-gallery">Bibliothèque</button>
-            <button id="show-form">Nouvelle Carte</button>
+            <button id="theme-toggle">Thème</button>
         </div>
 
         <div id="main-content">
             <form id="form-carte">
+                <div class="form-group">
+                    <label for="carteNom">Nom de la Carte :</label>
+                    <input type="text" id="carteNom" placeholder="Nom par défaut : Mégane-Carde">
+                </div>
                 <div class="form-group">
                     <label for="nom">Nom :</label>
                     <input type="text" id="nom" required>
@@ -379,30 +606,37 @@
                     <input type="email" id="email" required>
                 </div>
                 <div class="form-group">
+                    <label for="fonction">Fonction :</label>
+                    <input type="text" id="fonction">
+                </div>
+                <div class="form-group">
                     <label for="photo">Photo :</label>
                     <input type="file" id="photo" accept="image/*" required>
                 </div>
                 <button type="submit" class="btn-submit">Créer la Carte</button>
             </form>
 
-            <div id="carte-preview">
+            <div id="carte-preview" style="display: none;">
                 <button class="preview-btn" id="preview-main-btn" style="display:none;">👁️</button>
                 <div id="carte-header">
-                    <h2>Mégane-Carde</h2>
+                    <h2 id="display-carte-nom">Mégane-Carde</h2>
                 </div>
                 <div id="carte-content">
                     <div id="carte-info">
                         <p><strong>Nom :</strong> <span id="display-nom"></span></p>
                         <p><strong>Prénom :</strong> <span id="display-prenom"></span></p>
-                        <p><strong>Date de Naissance :</strong> <span id="display-dateNaissance"></span></p>
-                        <p><strong>Lieu de Naissance :</strong> <span id="display-lieuNaissance"></span></p>
+                        <p><strong>Né(e) le :</strong> <span id="display-dateNaissance"></span></p>
+                        <p><strong>à :</strong> <span id="display-lieuNaissance"></span></p>
                         <p><strong>Ethnie :</strong> <span id="display-ethnie"></span></p>
                         <p><strong>Nationalité :</strong> <span id="display-nationalite"></span></p>
-                        <p><strong>Lieu d'Habitation :</strong> <span id="display-lieuHabitation"></span></p>
-                        <p><strong>Téléphone :</strong> <span id="display-numeroTelephone"></span></p>
+                        <p><strong>Résidence :</strong> <span id="display-lieuHabitation"></span></p>
+                        <p><strong>Tél. :</strong> <span id="display-numeroTelephone"></span></p>
                         <p><strong>Email :</strong> <span id="display-email"></span></p>
                     </div>
-                    <img id="carte-photo" src="" alt="Photo d'identité">
+                    <div id="carte-photo-container">
+                        <img id="carte-photo" src="" alt="Photo d'identité">
+                        <p id="carte-fonction"></p>
+                    </div>
                 </div>
             </div>
             
@@ -413,7 +647,7 @@
             </div>
         </div>
         
-        <div id="gallery">
+        <div id="gallery" style="display: none;">
             <h2>Cartes Enregistrées</h2>
             <div id="gallery-container">
                 </div>
@@ -435,10 +669,19 @@
         const previewModal = document.getElementById('previewModal');
         const modalContentContainer = document.getElementById('modal-content-container');
         const menu = document.getElementById('menu');
+        const themeToggleButton = document.getElementById('theme-toggle');
+
+        // Initialisation du thème
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+        }
+        initTheme();
 
         // Fonction de validation du formulaire
         function validateForm(formData) {
-            // Règle 1: Nom et Prénom
             const nomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
             const prenomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
             if (!nomRegex.test(formData.nom) || !prenomRegex.test(formData.prenom)) {
@@ -446,7 +689,6 @@
                 return false;
             }
 
-            // Règle 2: Date de naissance
             const dateNaissance = new Date(formData.dateNaissance);
             const today = new Date();
             if (isNaN(dateNaissance.getTime()) || dateNaissance >= today) {
@@ -454,20 +696,17 @@
                 return false;
             }
 
-            // Règle 3: Email et Téléphone
             const emailRegex = /^\S+@\S+\.\S+$/;
             if (!emailRegex.test(formData.email)) {
                 alert("Veuillez saisir une adresse email valide.");
                 return false;
             }
-            // Règle pour le téléphone (optionnel, simple format)
             const telRegex = /^\+?[0-9\s-]{6,15}$/;
             if (!telRegex.test(formData.numeroTelephone)) {
                 alert("Veuillez saisir un numéro de téléphone valide (entre 6 et 15 chiffres, tirets, espaces ou '+' autorisés).");
                 return false;
             }
 
-            // Règle 4: Photo
             const file = formData.photoFile;
             if (file) {
                 const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -475,22 +714,18 @@
                     alert("Seuls les formats JPEG, PNG et JPG sont acceptés.");
                     return false;
                 }
-                const maxFileSize = 2 * 1024 * 1024; // 2 Mo
+                const maxFileSize = 2 * 1024 * 1024;
                 if (file.size > maxFileSize) {
                     alert("La taille du fichier ne doit pas dépasser 2 Mo.");
                     return false;
                 }
-
-                // NOTE: La détection d'un visage humain n'est pas possible avec un simple script JavaScript.
-                // Cela nécessite une librairie externe lourde ou un service d'API.
-                // Le code pour cette fonctionnalité serait placé ici.
-                // Par exemple: `if (!faceDetected(file)) { alert("Pas de visage détecté !"); return false; }`
             }
 
-            return true; // Toutes les validations sont réussies
+            return true;
         }
 
         function updateFormWithCardData(data) {
+            document.getElementById('carteNom').value = data.carteNom || '';
             document.getElementById('nom').value = data.nom;
             document.getElementById('prenom').value = data.prenom;
             document.getElementById('dateNaissance').value = data.dateNaissance;
@@ -500,8 +735,10 @@
             document.getElementById('lieuHabitation').value = data.lieuHabitation;
             document.getElementById('numeroTelephone').value = data.numeroTelephone;
             document.getElementById('email').value = data.email;
+            document.getElementById('fonction').value = data.fonction;
             document.getElementById('carte-photo').src = data.photo;
 
+            document.getElementById('display-carte-nom').textContent = data.carteNom || 'Mégane-Carde';
             document.getElementById('display-nom').textContent = data.nom;
             document.getElementById('display-prenom').textContent = data.prenom;
             document.getElementById('display-dateNaissance').textContent = data.dateNaissance;
@@ -511,6 +748,7 @@
             document.getElementById('display-lieuHabitation').textContent = data.lieuHabitation;
             document.getElementById('display-numeroTelephone').textContent = data.numeroTelephone;
             document.getElementById('display-email').textContent = data.email;
+            document.getElementById('carte-fonction').textContent = data.fonction;
 
             cartePreview.style.display = 'flex';
             downloadButtons.style.display = 'flex';
@@ -567,37 +805,34 @@
             let cardElement;
             if (card) {
                 cardElement = document.createElement('div');
-                cardElement.id = 'carte-preview-modal';
-                cardElement.style.width = '85.60mm';
-                cardElement.style.height = '53.98mm';
-                cardElement.style.padding = '15px';
-                cardElement.style.border = '2px solid #007bff';
-                cardElement.style.borderRadius = '8px';
-                cardElement.style.backgroundColor = '#fdfdfd';
+                cardElement.className = 'modal-content';
                 cardElement.innerHTML = `
-                    <div style="text-align: center;">
-                        <h2 style="margin: 0 0 5px 0; color: #007bff; font-size: 14px; text-transform: uppercase;">Mégane-Carde</h2>
+                    <div style="text-align: center; border-bottom: 1px solid rgba(0, 86, 179, 0.2); padding-bottom: 3px; margin-bottom: 5px;">
+                        <h2 style="margin: 0; color: #0056b3; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">${card.carteNom || 'Mégane-Carde'}</h2>
                     </div>
-                    <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1; padding-top: 5px;">
-                        <div style="flex-grow: 1; padding-right: 10px;">
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Nom :</strong> ${card.nom}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Date de Naissance :</strong> ${card.dateNaissance}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Lieu de Naissance :</strong> ${card.lieuNaissance}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Lieu d'Habitation :</strong> ${card.lieuHabitation}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Téléphone :</strong> ${card.numeroTelephone}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Email :</strong> ${card.email}</p>
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1;">
+                        <div style="flex-grow: 1; padding-right: 8px; font-size: 0.45em; line-height: 1.1;">
+                            <p style="margin: 0px 0;"><strong>Nom :</strong> ${card.nom}</p>
+                            <p style="margin: 0px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
+                            <p style="margin: 0px 0;"><strong>Né(e) le :</strong> ${card.dateNaissance}</p>
+                            <p style="margin: 0px 0;"><strong>à :</strong> ${card.lieuNaissance}</p>
+                            <p style="margin: 0px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
+                            <p style="margin: 0px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
+                            <p style="margin: 0px 0;"><strong>Résidence :</strong> ${card.lieuHabitation}</p>
+                            <p style="margin: 0px 0;"><strong>Tél. :</strong> ${card.numeroTelephone}</p>
+                            <p style="margin: 0px 0;"><strong>Email :</strong> ${card.email}</p>
                         </div>
-                        <img src="${card.photo}" style="width: 50px; height: 65px; border: 1px solid #ddd; border-radius: 4px; object-fit: cover; flex-shrink: 0;">
+                        <div style="flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; width: 55px;">
+                            <img src="${card.photo}" style="width: 50px; height: 65px; border: 2px solid #0056b3; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                            <p style="font-size: 0.5em; color: #004d80; font-weight: bold; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
+                        </div>
                     </div>
                 `;
             } else {
                 cardElement = cartePreview.cloneNode(true);
-                cardElement.style.display = 'flex';
                 cardElement.style.boxShadow = 'none';
                 cardElement.querySelector('.preview-btn').style.display = 'none';
+                cardElement.className = 'modal-content';
             }
 
             modalContentContainer.appendChild(cardElement);
@@ -618,48 +853,53 @@
         document.getElementById('menu-toggle-btn').addEventListener('click', function() {
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         });
-
+        
+        document.getElementById('show-home').addEventListener('click', () => {
+            clearForm();
+            showForm();
+            menu.style.display = 'none';
+        });
+        
         document.getElementById('show-gallery').addEventListener('click', () => {
             showGallery();
             menu.style.display = 'none';
         });
-
-        document.getElementById('show-form').addEventListener('click', () => {
-            clearForm();
-            showForm();
-            menu.style.display = 'none';
+        
+        themeToggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
         });
 
         // Soumission du formulaire
         document.getElementById('form-carte').addEventListener('submit', function(event) {
             event.preventDefault();
 
-            // Collecte des données du formulaire
             const formData = {
-                nom: document.getElementById('nom').value,
-                prenom: document.getElementById('prenom').value,
+                carteNom: document.getElementById('carteNom').value.trim(),
+                nom: document.getElementById('nom').value.trim(),
+                prenom: document.getElementById('prenom').value.trim(),
                 dateNaissance: document.getElementById('dateNaissance').value,
-                lieuNaissance: document.getElementById('lieuNaissance').value,
-                ethnie: document.getElementById('ethnie').value,
-                nationalite: document.getElementById('nationalite').value,
-                lieuHabitation: document.getElementById('lieuHabitation').value,
-                numeroTelephone: document.getElementById('numeroTelephone').value,
-                email: document.getElementById('email').value,
+                lieuNaissance: document.getElementById('lieuNaissance').value.trim(),
+                ethnie: document.getElementById('ethnie').value.trim(),
+                nationalite: document.getElementById('nationalite').value.trim(),
+                lieuHabitation: document.getElementById('lieuHabitation').value.trim(),
+                numeroTelephone: document.getElementById('numeroTelephone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                fonction: document.getElementById('fonction').value.trim(),
                 photoFile: document.getElementById('photo').files[0]
             };
             
-            // Validation des données selon les règles
             if (!validateForm(formData)) {
-                return; // Arrête la fonction si la validation échoue
+                return;
             }
 
-            // Capitalisation de la première lettre pour les champs de texte
             formData.nom = formData.nom.charAt(0).toUpperCase() + formData.nom.slice(1).toLowerCase();
             formData.prenom = formData.prenom.charAt(0).toUpperCase() + formData.prenom.slice(1).toLowerCase();
             formData.lieuNaissance = formData.lieuNaissance.charAt(0).toUpperCase() + formData.lieuNaissance.slice(1).toLowerCase();
             formData.lieuHabitation = formData.lieuHabitation.charAt(0).toUpperCase() + formData.lieuHabitation.slice(1).toLowerCase();
 
-            // Affichage de la carte
+            document.getElementById('display-carte-nom').textContent = formData.carteNom || 'Mégane-Carde';
             document.getElementById('display-nom').textContent = formData.nom;
             document.getElementById('display-prenom').textContent = formData.prenom;
             document.getElementById('display-dateNaissance').textContent = formData.dateNaissance;
@@ -669,6 +909,7 @@
             document.getElementById('display-lieuHabitation').textContent = formData.lieuHabitation;
             document.getElementById('display-numeroTelephone').textContent = formData.numeroTelephone;
             document.getElementById('display-email').textContent = formData.email;
+            document.getElementById('carte-fonction').textContent = formData.fonction;
 
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -700,25 +941,44 @@
                 const imgData = canvas.toDataURL('image/png');
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({
-                    orientation: 'landscape', unit: 'mm', format: [85.60, 53.98]
+                    orientation: 'landscape', unit: 'mm', format: [85.60, 53.98] 
                 });
-                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 53.98);
+                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 53.98); 
                 pdf.save('carte-megane.pdf');
             }
         }
         
         document.getElementById('save-card').addEventListener('click', async function() {
             const data = {
-                nom: document.getElementById('nom').value, prenom: document.getElementById('prenom').value, dateNaissance: document.getElementById('dateNaissance').value, lieuNaissance: document.getElementById('lieuNaissance').value, ethnie: document.getElementById('ethnie').value, nationalite: document.getElementById('nationalite').value, lieuHabitation: document.getElementById('lieuHabitation').value, numeroTelephone: document.getElementById('numeroTelephone').value, email: document.getElementById('email').value, photo: document.getElementById('carte-photo').src
+                carteNom: document.getElementById('carteNom').value.trim() || 'Mégane-Carde',
+                nom: document.getElementById('nom').value, 
+                prenom: document.getElementById('prenom').value, 
+                dateNaissance: document.getElementById('dateNaissance').value, 
+                lieuNaissance: document.getElementById('lieuNaissance').value, 
+                ethnie: document.getElementById('ethnie').value, 
+                nationalite: document.getElementById('nationalite').value, 
+                lieuHabitation: document.getElementById('lieuHabitation').value, 
+                numeroTelephone: document.getElementById('numeroTelephone').value, 
+                email: document.getElementById('email').value, 
+                fonction: document.getElementById('fonction').value, 
+                photo: document.getElementById('carte-photo').src
             };
-            const existingIndex = cardData.findIndex(card => card.nom === data.nom && card.prenom === data.prenom);
+            const uniqueId = `${data.nom}-${data.prenom}-${data.dateNaissance}`;
+            const existingIndex = cardData.findIndex(card => `${card.nom}-${card.prenom}-${card.dateNaissance}` === uniqueId);
+            
             if (existingIndex !== -1) {
-                cardData[existingIndex] = data;
+                if (confirm('Une carte avec ce nom, prénom et date de naissance existe déjà. Voulez-vous la mettre à jour ?')) {
+                    cardData[existingIndex] = data;
+                    localStorage.setItem('savedCards', JSON.stringify(cardData));
+                    alert('Carte mise à jour avec succès !');
+                } else {
+                    alert('Opération annulée.');
+                }
             } else {
                 cardData.push(data);
+                localStorage.setItem('savedCards', JSON.stringify(cardData));
+                alert('Carte enregistrée avec succès !');
             }
-            localStorage.setItem('savedCards', JSON.stringify(cardData));
-            alert('Carte enregistrée avec succès !');
         });
 
         // Événements des boutons
